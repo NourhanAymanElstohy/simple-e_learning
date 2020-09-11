@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Course;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCourseRequest;
+use App\Http\Requests\UpdateCourseRequest;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -42,11 +44,11 @@ class CourseController extends Controller
         return view('admin.courses.create');
     }
 
-    public function store()
+    public function store(StoreCourseRequest $request)
     {
         Course::create([
-            'name' => request()->name,
-            'content' => request()->content
+            'name' => $request->name,
+            'content' => $request->content
         ]);
         return redirect()->route('courses.index');
     }
@@ -76,12 +78,12 @@ class CourseController extends Controller
         ]);
     }
 
-    public function update()
+    public function update(UpdateCourseRequest $request)
     {
-        $courseId = request()->course;
+        $courseId = $request->course;
         $course = Course::find($courseId);
 
-        $data = request()->only([
+        $data = $request->only([
             'name',
             'content'
         ]);
@@ -100,12 +102,6 @@ class CourseController extends Controller
 
     public function attach()
     {
-        // $courses = Course::all();
-        // $studentId = Auth::id();
-        // $student = User::find($studentId);
-
-        // $student_courses = 
-
         $courseId = request()->course;
         $course = Course::findOrFail($courseId);
         $studentId = Auth::id();
