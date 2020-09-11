@@ -19,7 +19,7 @@ Route::get('/', function () {
         if ($user->hasRole('admin')) {
             return redirect('/admin');
         } else {
-            return redirect('/courses');
+            return redirect('/home');
         }
     } else {
         return redirect('/home');

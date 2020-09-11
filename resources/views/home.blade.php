@@ -3,20 +3,12 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            {{-- <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
+        <div class="col-7">
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    {{ __('You are logged in!') }}
-                </div>
-            </div> --}}
+            <p style="margin-top: 12rem">
+            <h2 style="display: inline;">Welcome to Our Website
+            Go to <a href="{{route('courses.index')}}" style="text-decoration: none;">Our Courses</a></h2>
+            </p>
         </div>
     </div>
 </div>
