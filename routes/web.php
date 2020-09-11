@@ -35,7 +35,6 @@ Route::get('/admin', function () {
 })->middleware(['role:admin']);
 
 //============== Courses ====================
-
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/courses', 'CourseController@index')->name('courses.index');
     Route::get('/courses/create', 'CourseController@create')->name('courses.create')->middleware(['role:admin']);
@@ -43,4 +42,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/courses/{course}/edit', 'CourseController@edit')->name('courses.edit')->middleware(['role:admin']);
     Route::put('/courses/{course}', 'CourseController@update')->name('courses.update')->middleware(['role:admin']);
     Route::delete('/courses/{course}', 'CourseController@destroy')->name('courses.destroy')->middleware(['role:admin']);
+});
+
+//================ Students =================
+
+Route::group(['middleware' => ['auth', 'role:admin']], function () {
+    Route::get('/students', 'StudentController@index')->name('students.index');
+    Route::get('/students/create', 'StudentController@create')->name('students.create');
+    Route::post('/students', 'StudentController@store')->name('students.store');
+    Route::get('/students/{student}/edit', 'StudentController@edit')->name('students.edit');
+    Route::put('/students/{student}', 'StudentController@update')->name('students.update');
+    Route::delete('/students/{student}', 'StudentController@destroy')->name('students.destroy');
 });

@@ -3,8 +3,9 @@
 @section('content')
     <h1 style="color:#3cb371"><strong>Courses</strong></h1>
     <div class="p-2">
-        <a href="{{route('courses.create')}}"><button type="button" class="btn btn-success float-left">Create
-                Course</button></a>
+        <a href="{{route('students.create')}}"><button type="button" class="btn btn-success float-left">Add
+            Student</button>
+        </a>
     </div>
 
     <table class="table table-striped table-bordered mt-5" style="width:80rem%">
@@ -12,22 +13,22 @@
             <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Content</th>
+                <th>Email</th>
                 <th>Created At</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($courses as $course)
+            @foreach ($students as $student)
             <tr>
-                <th>{{$course->id}}</th>
-                <td>{{$course->name}}</td>
-                <td>{{$course->content}}</td>
-                <td>{{$course->created_at ? $course->created_at->format('d-m-Y') : ''}}</td>
+                <th>{{$student->id}}</th>
+                <td>{{$student->name}}</td>
+                <td>{{$student->email}}</td>
+                <td>{{$student->created_at ? $student->created_at->format('d-m-Y') : ''}}</td>
                 <td>
-                    <a href="{{route('courses.edit',['course' => $course->id])}}"
+                    <a href="{{route('students.edit',['student' => $student->id])}}"
                         class="btn btn-primary float-center mr-2">Edit</a>
-                    <form method="POST" action="{{route('courses.destroy',['course' => $course->id])}}"
+                    <form method="POST" action="{{route('students.destroy',['student' => $student->id])}}"
                         class="float-right">
                         @csrf
                         @method('DELETE')
