@@ -12,9 +12,9 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          {{-- <img src="" class="img-circle elevation-2" alt="User Image"> --}}
+        <img src="/upload/profile_pic/{{Auth::user()->image}}" style="width:50px; height: 50px; border-radius: 50%;">
         </div>
-        <div class="info">
+        <div class="info mt-2">
           <h5 style="color:#3cb371"><strong>{{ Auth::user()->name }}</strong></h5>
         </div>
       </div>
