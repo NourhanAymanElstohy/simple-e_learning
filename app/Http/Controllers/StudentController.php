@@ -64,11 +64,11 @@ class StudentController extends Controller
         $studentId = request()->student;
         $student = User::find($studentId);
 
-        if (auth()->user()->hasRole('student')) {
+        if (auth()->user()->hasRole('admin')) {
             return view('admin.students.show', [
                 'student' => $student,
             ]);
-        } elseif (auth()->user()->hasRole('admin')) {
+        } elseif (auth()->user()->hasRole('student')) {
             return view('students.show', [
                 'student' => $student,
             ]);
