@@ -60,7 +60,7 @@
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     @hasanyrole('student')
                                     <a  class="dropdown-item" href="{{route('students.show', ['student' => Auth::user()])}}">
-                                        My Courses
+                                        Student Profile
                                     </a>
                                     @endhasanyrole
                                     <a class="dropdown-item" href="{{ route('logout') }}"

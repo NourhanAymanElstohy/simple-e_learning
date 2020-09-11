@@ -45,7 +45,6 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 Route::get('/courses/{course}/students', 'CourseController@show')->name('courses.show')->middleware('auth');
-// Route::get('/studen', 'CourseController@profcat')->name('profcat');
 Route::get('/attach/{course}', 'CourseController@attach')->name('attach');
 Route::get('/detach/{course}', 'CourseController@detach')->name('detach');
 //================ Students =================
@@ -55,8 +54,7 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::get('/students/create', 'StudentController@create')->name('students.create');
     Route::post('/students', 'StudentController@store')->name('students.store');
     Route::get('/students/{student}/edit', 'StudentController@edit')->name('students.edit');
-    Route::put('/students/{student}', 'StudentController@update')->name('students.update');
     Route::delete('/students/{student}', 'StudentController@destroy')->name('students.destroy');
 });
-
-Route::get('/students/{student}/courses', 'StudentController@show')->name('students.show')->middleware('auth');
+Route::put('/students/{student}', 'StudentController@update')->name('students.update')->middleware('auth');
+Route::get('/students/{student}', 'StudentController@show')->name('students.show')->middleware('auth');

@@ -60,7 +60,14 @@
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                             </div>
                         </div>
-
+                        {{-- <div class="form-group row">
+                            <label for="image" class="col-md-4 col-form-label text-md-right">Image</label>
+                            <form enctype="multipart/form-data" action="#">
+                                @csrf 
+                                @method('PUT')
+                                <input type="file" value="" class="ml-3" name="image">
+                            </form>
+                        </div> --}}
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">

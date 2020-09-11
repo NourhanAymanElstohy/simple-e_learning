@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Intervention\Image\Facades\Image;
 
 class StudentController extends Controller
 {
@@ -45,18 +46,41 @@ class StudentController extends Controller
 
     public function update()
     {
+        echo 'jjjjjjjjj';
         $studentId = request()->student;
         $student = User::find($studentId);
 
-        $data = request()->only([
-            'name',
-            'email',
-        ]);
-        $password = Hash::make(request()->password);
-        $data += array('password' => $password);
+        if (auth()->user()->hasRole('admin')) {
+            $data = request()->only([
+                'name',
+                'email',
+            ]);
+            $password = Hash::make(request()->password);
+            $data += array('password' => $password);
+            $student->update($data);
 
-        $student->update($data);
-        return redirect()->route('students.index');
+            if (request()->hasFile('image')) {
+                $image = request()->file('image');
+                $filename = time() . '.' . $image->getClientOriginalExtension();
+                Image::make($image)->resize(300, 300)->save(public_path('/upload/profile_pic/' . $filename));
+
+                $student->image = $filename;
+                $student->save();
+            }
+            return redirect()->route('students.index');
+        } elseif (auth()->user()->hasRole('student')) {
+            if (request()->hasFile('image')) {
+                $image = request()->file('image');
+                $filename = time() . '.' . $image->getClientOriginalExtension();
+                Image::make($image)->resize(300, 300)->save(public_path('/upload/profile_pic/' . $filename));
+
+                $student->image = $filename;
+                $student->save();
+                return redirect()->route('students.show', [
+                    'student' => $student
+                ]);
+            }
+        }
     }
 
     public function show()
@@ -81,5 +105,20 @@ class StudentController extends Controller
         $student = User::find($studentId);
         $student->delete();
         return redirect()->route('students.index');
+    }
+
+    public function update_image()
+    {
+        $studentId = request()->student;
+        $student = User::find($studentId);
+
+        if (request()->hasFile('image')) {
+            $image = request()->file('image');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            Image::make($image)->resize(300, 300)->save(public_path('/upload/profile_pic/' . $filename));
+
+            $student->image = $filename;
+            $student->save();
+        }
     }
 }
