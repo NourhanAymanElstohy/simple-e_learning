@@ -44,6 +44,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/courses/{course}', 'CourseController@destroy')->name('courses.destroy')->middleware(['role:admin']);
 });
 
+Route::get('/courses/{course}/students', 'CourseController@show')->name('courses.show')->middleware('auth');
+// Route::get('/studen', 'CourseController@profcat')->name('profcat');
+Route::get('/attach/{course}', 'CourseController@attach')->name('attach');
+Route::get('/detach/{course}', 'CourseController@detach')->name('detach');
 //================ Students =================
 
 Route::group(['middleware' => ['auth', 'role:admin']], function () {
@@ -54,3 +58,5 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::put('/students/{student}', 'StudentController@update')->name('students.update');
     Route::delete('/students/{student}', 'StudentController@destroy')->name('students.destroy');
 });
+
+Route::get('/students/{student}/courses', 'StudentController@show')->name('students.show')->middleware('auth');

@@ -22,7 +22,7 @@
             @foreach ($students as $student)
             <tr>
                 <th>{{$student->id}}</th>
-                <td>{{$student->name}}</td>
+                <td><a href="{{route('students.show', ['student' => $student])}}">{{$student->name}}</a></td>
                 <td>{{$student->email}}</td>
                 <td>{{$student->created_at ? $student->created_at->format('d-m-Y') : ''}}</td>
                 <td>

@@ -59,6 +59,22 @@ class StudentController extends Controller
         return redirect()->route('students.index');
     }
 
+    public function show()
+    {
+        $studentId = request()->student;
+        $student = User::find($studentId);
+
+        if (auth()->user()->hasRole('student')) {
+            return view('admin.students.show', [
+                'student' => $student,
+            ]);
+        } elseif (auth()->user()->hasRole('admin')) {
+            return view('students.show', [
+                'student' => $student,
+            ]);
+        }
+    }
+
     public function destroy()
     {
         $studentId = request()->student;

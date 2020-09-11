@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Course;
 use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
@@ -16,8 +18,21 @@ class CourseController extends Controller
                 'courses' => $courses,
             ]);
         } else {
+            $studentId = Auth::id();
+            $student = User::find($studentId);
+            $students_courses = $student->courses->toArray();
+            $st_courses = [];
+
+            foreach ($students_courses as $st_co) {
+                foreach ($st_co as $key => $value) {
+                    if ($key == 'id') {
+                        array_push($st_courses, $value);
+                    }
+                }
+            }
             return view('courses.index', [
                 'courses' => $courses,
+                'st_courses' => $st_courses
             ]);
         }
     }
@@ -34,6 +49,22 @@ class CourseController extends Controller
             'content' => request()->content
         ]);
         return redirect()->route('courses.index');
+    }
+
+    public function show()
+    {
+        $courseId = request()->course;
+        $course = Course::find($courseId);
+
+        if (auth()->user()->hasRole('admin')) {
+            return view('admin.courses.show', [
+                'course' => $course,
+            ]);
+        } elseif (auth()->user()->hasRole('student')) {
+            return view('courses.show', [
+                'course' => $course,
+            ]);
+        }
     }
 
     public function edit()
@@ -64,6 +95,33 @@ class CourseController extends Controller
         $courseId = request()->course;
         $course = Course::find($courseId);
         $course->delete();
+        return redirect()->route('courses.index');
+    }
+
+    public function attach()
+    {
+        // $courses = Course::all();
+        // $studentId = Auth::id();
+        // $student = User::find($studentId);
+
+        // $student_courses = 
+
+        $courseId = request()->course;
+        $course = Course::findOrFail($courseId);
+        $studentId = Auth::id();
+        $student = User::find($studentId);
+
+        $student->courses()->attach($course);
+        return redirect()->route('courses.index');
+    }
+
+    public function detach()
+    {
+        $courseId  = request()->course;
+        $course = Course::findOrFail($courseId);
+        $studentId = Auth::id();
+        $student = User::find($studentId);
+        $student->courses()->detach($course);
         return redirect()->route('courses.index');
     }
 }
