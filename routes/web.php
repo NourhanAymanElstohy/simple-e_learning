@@ -26,7 +26,7 @@ Route::get('/', function () {
     }
 });
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -35,18 +35,20 @@ Route::get('/admin', function () {
 })->middleware(['role:admin']);
 
 //============== Courses ====================
-Route::group(['middleware' => 'auth'], function () {
-    Route::get('/courses', 'CourseController@index')->name('courses.index');
-    Route::get('/courses/create', 'CourseController@create')->name('courses.create')->middleware(['role:admin']);
-    Route::post('/courses', 'CourseController@store')->name('courses.store')->middleware(['role:admin']);
-    Route::get('/courses/{course}/edit', 'CourseController@edit')->name('courses.edit')->middleware(['role:admin']);
-    Route::put('/courses/{course}', 'CourseController@update')->name('courses.update')->middleware(['role:admin']);
-    Route::delete('/courses/{course}', 'CourseController@destroy')->name('courses.destroy')->middleware(['role:admin']);
+Route::group(['middleware' => ['auth', 'role:admin']], function () {
+    Route::get('/courses/create', 'CourseController@create')->name('courses.create');
+    Route::post('/courses', 'CourseController@store')->name('courses.store');
+    Route::get('/courses/{course}/edit', 'CourseController@edit')->name('courses.edit');
+    Route::put('/courses/{course}', 'CourseController@update')->name('courses.update');
+    Route::delete('/courses/{course}', 'CourseController@destroy')->name('courses.destroy');
 });
 
-Route::get('/courses/{course}/students', 'CourseController@show')->name('courses.show')->middleware('auth');
-Route::get('/attach/{course}', 'CourseController@attach')->name('attach');
-Route::get('/detach/{course}', 'CourseController@detach')->name('detach');
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/courses', 'CourseController@index')->name('courses.index');
+    Route::get('/courses/{course}/students', 'CourseController@show')->name('courses.show');
+    Route::get('/attach/{course}', 'CourseController@attach')->name('attach');
+    Route::get('/detach/{course}', 'CourseController@detach')->name('detach');
+});
 //================ Students =================
 
 Route::group(['middleware' => ['auth', 'role:admin']], function () {
@@ -56,5 +58,5 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::get('/students/{student}/edit', 'StudentController@edit')->name('students.edit');
     Route::delete('/students/{student}', 'StudentController@destroy')->name('students.destroy');
 });
-Route::put('/students/{student}', 'StudentController@update')->name('students.update')->middleware('auth');
+Route::put('/students/{student}', 'StudentController@update')->name('students.update')->middleware(['auth', 'verified']);
 Route::get('/students/{student}', 'StudentController@show')->name('students.show')->middleware('auth');

@@ -8,7 +8,7 @@
         @include('admin.layouts.sidebar')
         <div class="content-wrapper">
             <div class="container">
-                <div class="p-3" style="text-align:center">
+                <div class="p-3">
                     @yield('content')
                 </div>
             </div>
