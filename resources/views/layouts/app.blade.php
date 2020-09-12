@@ -63,6 +63,12 @@
                                         Student Profile
                                     </a>
                                     @endhasanyrole
+
+                                    @hasanyrole('admin')
+                                    <a  class="dropdown-item" href="{{url('/admin')}}">
+                                        Admin Panel
+                                    </a>
+                                    @endhasanyrole                                    
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

@@ -10,7 +10,7 @@
                         <h5 class="card-title">{{$course->name}}</h5>
                         <p class="card-text">{{$course->content}}</p>
                         @if (in_array($course->id , $st_courses )) 
-                            <a href="{{route('detach', $course->id)}}" class="btn btn-secondary mr-3">Droll</a>
+                            <a href="{{route('detach', $course->id)}}" class="btn btn-secondary mr-3">Cancel</a>
                         @else
                             <a href="{{route('attach', $course->id)}}" class="btn btn-primary mr-3">Enroll</a>
                         @endif

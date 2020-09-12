@@ -12,5 +12,8 @@
             </div>
         </div>        
         @endforeach
+
+    @else
+    <h2>There is No Courses {{$student->name}} enroll in</h2>
     @endif
 @endsection
