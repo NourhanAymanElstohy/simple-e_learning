@@ -8,6 +8,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Str;
 
 class StudentController extends Controller
 {
@@ -29,11 +30,15 @@ class StudentController extends Controller
         $student = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => Hash::make(Str::random(8)),
             'role' => 1
         ]);
         $student->assignRole('student');
         $student->save();
+
+        $token = app('auth.password.broker')->createToken($student);
+        $student->sendPasswordResetNotification($token);
+
         return redirect()->route('students.index');
     }
 
@@ -56,8 +61,6 @@ class StudentController extends Controller
                 'name',
                 'email',
             ]);
-            $password = Hash::make($request->password);
-            $data += array('password' => $password);
             $student->update($data);
 
             if ($request->hasFile('image')) {

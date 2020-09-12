@@ -28,10 +28,8 @@ class UpdateStudentRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'email' => [
                 'required', 'string', 'email', 'max:255',
-                Rule::unique('users')->ignore($this->course),
+                Rule::unique('users')->ignore($this->student),
             ],
-
-            'password' => ['required', 'string', 'min:8'],
         ];
     }
 
@@ -43,7 +41,6 @@ class UpdateStudentRequest extends FormRequest
             'name.string' => "Student name must be String ",
             'email.required' => "Stdent mail is required",
             'email.unique' => "Email already exist",
-            'password.min' => "Password is less than 8 chars"
         ];
     }
 }
