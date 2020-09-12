@@ -43,9 +43,10 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::delete('/courses/{course}', 'CourseController@destroy')->name('courses.destroy');
 });
 
-Route::group(['middleware' => ['auth']], function () {
-    Route::get('/courses', 'CourseController@index')->name('courses.index');
-    Route::get('/courses/{course}/students', 'CourseController@show')->name('courses.show');
+Route::get('/courses', 'CourseController@index')->name('courses.index')->middleware('auth');
+Route::get('/courses/{course}/students', 'CourseController@show')->name('courses.show')->middleware('auth');
+
+Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/attach/{course}', 'CourseController@attach')->name('attach');
     Route::get('/detach/{course}', 'CourseController@detach')->name('detach');
 });
