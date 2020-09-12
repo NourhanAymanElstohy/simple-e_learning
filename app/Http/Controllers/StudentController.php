@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreStudentRequest;
+use App\Http\Requests\UpdateStudentRequest;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -22,12 +24,12 @@ class StudentController extends Controller
         return view('admin.students.create');
     }
 
-    public function store()
+    public function store(StoreStudentRequest $request)
     {
         $student = User::create([
-            'name' => request()->name,
-            'email' => request()->email,
-            'password' => Hash::make(request()->password),
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
             'role' => 1
         ]);
         $student->assignRole('student');
@@ -44,23 +46,22 @@ class StudentController extends Controller
         ]);
     }
 
-    public function update()
+    public function update(UpdateStudentRequest $request)
     {
-        echo 'jjjjjjjjj';
-        $studentId = request()->student;
+        $studentId = $request->student;
         $student = User::find($studentId);
 
         if (auth()->user()->hasRole('admin')) {
-            $data = request()->only([
+            $data = $request->only([
                 'name',
                 'email',
             ]);
-            $password = Hash::make(request()->password);
+            $password = Hash::make($request->password);
             $data += array('password' => $password);
             $student->update($data);
 
-            if (request()->hasFile('image')) {
-                $image = request()->file('image');
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
                 $filename = time() . '.' . $image->getClientOriginalExtension();
                 Image::make($image)->resize(300, 300)->save(public_path('/upload/profile_pic/' . $filename));
 
@@ -69,8 +70,8 @@ class StudentController extends Controller
             }
             return redirect()->route('students.index');
         } elseif (auth()->user()->hasRole('student')) {
-            if (request()->hasFile('image')) {
-                $image = request()->file('image');
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
                 $filename = time() . '.' . $image->getClientOriginalExtension();
                 Image::make($image)->resize(300, 300)->save(public_path('/upload/profile_pic/' . $filename));
 

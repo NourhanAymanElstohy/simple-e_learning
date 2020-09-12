@@ -33,7 +33,7 @@ class StoreCourseRequest extends FormRequest
         return [
             'name.required' => "Course name can't be empty",
             'name.min' => "Course name can't be less than 3 chars",
-            'Course .unique' => "Course name must be unique ",
+            'name.unique' => "Course name must be unique ",
             'content.required' => "Course content can't be empty",
         ];
     }
