@@ -77,8 +77,8 @@ You can now access the server at http://localhost:8000
 **Command List**
 
 ```
-git clone https://github.com/NourhanAymanElstohy/Techvisor.git
-cd Techvisor
+git clone https://github.com/NourhanAymanElstohy/simple-e_learning.git
+cd simple-e_learning
 composer install
 cp .env.example .env
 php artisan key:generate
